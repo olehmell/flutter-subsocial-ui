@@ -1,44 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_infinite_list/bloc/post_bloc.dart';
+import 'package:flutter_infinite_list/bloc/spaces/space_bloc.dart';
 import 'package:flutter_infinite_list/widgets/widgets.dart';
 
-class PostsList extends StatefulWidget {
+class SpacesList extends StatefulWidget {
   @override
-  _PostsListState createState() => _PostsListState();
+  _SpacesListState createState() => _SpacesListState();
 }
 
-class _PostsListState extends State<PostsList> {
+class _SpacesListState extends State<SpacesList> {
   final _scrollController = ScrollController();
-  PostBloc _postBloc;
+  SpaceBloc _spaceBloc;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _postBloc = BlocProvider.of<PostBloc>(context);
+    _spaceBloc = BlocProvider.of<SpaceBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
+    return BlocBuilder<SpaceBloc, SpaceState>(
       builder: (context, state) {
         switch (state.status) {
-          case PostStatus.failure:
-            return const Center(child: Text('failed to fetch posts'));
-          case PostStatus.success:
-            if (state.posts.isEmpty) {
-              return const Center(child: Text('no posts'));
+          case SpaceStatus.failure:
+            return const Center(child: Text('failed to fetch spaces'));
+          case SpaceStatus.success:
+            if (state.spaces.isEmpty) {
+              return const Center(child: Text('no spaces'));
             }
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return index >= state.posts.length
+                return index >= state.spaces.length
                     ? BottomLoader()
-                    : PostListItem(post: state.posts[index]);
+                    : SpaceListItem(space: state.spaces[index]);
               },
               itemCount: state.hasReachedMax
-                  ? state.posts.length
-                  : state.posts.length + 1,
+                  ? state.spaces.length
+                  : state.spaces.length + 1,
               controller: _scrollController,
             );
           default:
@@ -56,8 +56,7 @@ class _PostsListState extends State<PostsList> {
 
   void _onScroll() {
     if (_isBottom) {
-      print('ыыы');
-      _postBloc.add(PostFetched());
+      _spaceBloc.add(SpaceFetched());
     }
   }
 

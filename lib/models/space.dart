@@ -36,9 +36,6 @@ class Space {
       @required this.createdAtTime,
       @required this.createdBy,
       @required this.isUpdated,
-      @required this.updatedAtBlock,
-      @required this.updatedAtTime,
-      @required this.updatedBy,
       @required this.ownerId,
       @required this.contentId,
       @required this.isIpfsContent,
@@ -48,15 +45,19 @@ class Space {
       @required this.visiblePostsCount,
       @required this.hiddenPostsCount,
       @required this.score,
+      this.updatedAtBlock,
+      this.updatedAtTime,
+      this.updatedBy,
       this.parentId,
       this.handle});
 
-  static fromJson(Map<String, dynamic> parsedJson) {
+  static Space fromJson(Map<String, dynamic> parsedJson) {
+    print('In fromJson method');
     return Space(
         id: parsedJson['id'],
         createdAtBlock: parsedJson['createdAtBlock'],
         createdAtTime: parsedJson['createdAtTime'],
-        createdBy: parsedJson['createdAtTime'],
+        createdBy: parsedJson['createdBy'],
         isUpdated: parsedJson['isUpdated'],
         updatedAtBlock: parsedJson['updatedAtBlock'],
         updatedAtTime: parsedJson['updatedAtTime'],
@@ -72,4 +73,38 @@ class Space {
         hiddenPostsCount: parsedJson['hiddenPostsCount'],
         score: parsedJson['score']);
   }
+}
+
+class SpaceContent {
+  String name;
+  String about;
+  String image;
+  String email;
+  List<String> tags;
+  List<String> links;
+
+  SpaceContent(
+      {@required this.name,
+      this.about,
+      this.email,
+      this.image,
+      this.links,
+      this.tags});
+
+  static SpaceContent fromJson(Map<String, dynamic> parsedJson) {
+    return SpaceContent(
+      name: parsedJson['name'],
+      about: parsedJson['about'],
+      email: parsedJson['email'],
+      links: parsedJson['links'],
+      tags: parsedJson['tags'],
+    );
+  }
+}
+
+class SpaceData {
+  final Space struct;
+  final SpaceContent content;
+
+  SpaceData({@required this.struct, this.content});
 }

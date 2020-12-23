@@ -3,10 +3,8 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_infinite_list/api/substrate.dart';
 import 'package:flutter_infinite_list/models/post.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'post_event.dart';
@@ -15,9 +13,8 @@ part 'post_state.dart';
 const _postLimit = 20;
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  PostBloc({@required this.httpClient}) : super(const PostState());
+  PostBloc() : super(const PostState());
 
-  final http.Client httpClient;
   static const _postCount = 100;
 
   @override
@@ -65,7 +62,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Future<List<Post>> _fetchPosts([int startIndex = 0]) async {
-    final response = await httpClient.get(
+    final response = await http.get(
       'https://jsonplaceholder.typicode.com/posts?_start=$startIndex&_limit=$_postLimit',
     );
     if (response.statusCode == 200) {
